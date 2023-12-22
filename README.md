@@ -12,6 +12,8 @@
     hdfs dfs -rm /dataset.csv
  ```
 
+![alt text](https://github.com/ImMwiti/covid-19-analysis-hadoop-pyspark/blob/main/Screenshots/1.ingestion.png)
+
 
 ### 1.1 Starting Session in Pyspark
 
@@ -26,10 +28,15 @@ This will intiate a session connection with hadoop on the root directory via por
 ```
 This allow the code to be extracted afterwards and be used in Pyspark for analysis 
 
+![alt text](https://github.com/ImMwiti/covid-19-analysis-hadoop-pyspark/blob/main/Screenshots/2.spark%20session%20builder.png)
+
 ```python
 csv_path = "hdfs://localhost:9000/kencovid.csv"
 df = spark.read.option("header","true").csv(csv_path)
 ```
+![alt text](https://github.com/ImMwiti/covid-19-analysis-hadoop-pyspark/blob/main/Screenshots/3.reading%20csv%20file.png)
+
+
 
 ## 2 Analyzing/Pre processing data 
 
@@ -37,6 +44,8 @@ df = spark.read.option("header","true").csv(csv_path)
 from pyspark.sql.functions import *
 df.groupBy("County").count().orderBy("count", ascending=False).show()
 ```
+
+![alt text](https://github.com/ImMwiti/covid-19-analysis-hadoop-pyspark/blob/main/Screenshots/6.preprocess.png)
 
 ### 2.1 Filering data by handling mussing values
 
@@ -47,6 +56,8 @@ df = df.na.fill(0)
 null_counts = [df.filter(df[c].isNull()).count() for c in df.columns]
 ```
 
+![alt text](https://github.com/ImMwiti/covid-19-analysis-hadoop-pyspark/blob/main/Screenshots/8.filter%20outlier%20values.png)
+
 ### 2.2 Converting the columns into interger data type (integer)
 
 ```python
@@ -54,8 +65,9 @@ from pyspark.sql.functions import col
 
 df = df.withColumn("Regular Isolation Beds Available", col("Regular Isolation Beds Available").cast("integer"))
 df = df.withColumn("County", col("County").cast("string"))
-
 ```
+
+![alt text](https://github.com/ImMwiti/covid-19-analysis-hadoop-pyspark/blob/main/Screenshots/7.convert%20to%20data%20type.png)
 
 
 ### 2.3 Removing incorrect values 
@@ -66,6 +78,7 @@ from pyspark.sql.functions import col
 df_cleaned = df.where(col("Regular Isolation Beds Available").between(min_val, max_val))
 
 ```
+![alt text](https://github.com/ImMwiti/covid-19-analysis-hadoop-pyspark/blob/main/Screenshots/5.show%20rows.png)
 
 After applying all the transformations and consolidated the appropriate data that is need for Training the model 
 We can display the data using this code
@@ -74,6 +87,8 @@ We can display the data using this code
 df.printSchema()
 df.show(n=5)
 ```
+
+![alt text](https://github.com/ImMwiti/covid-19-analysis-hadoop-pyspark/blob/main/Screenshots/9.display%20dataframe.png)
 
 #3 Training the model using predective analysis 
 
@@ -142,6 +157,9 @@ plt.title("True vs Predicted")
 plt.show()
 
 ```
+
+![alt text](https://github.com/ImMwiti/covid-19-analysis-hadoop-pyspark/blob/main/Screenshots/model.png)
+
  ## 5 Testing the model 
 
 ```python
