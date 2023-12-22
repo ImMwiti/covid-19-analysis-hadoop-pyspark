@@ -1,6 +1,6 @@
 # Covid 19 Analysis With Hadoop and Pyspark
 
-# Loading Data into Hadoop and Starting Session in Pyspark
+## The First Step is Loading Data into Hadoop and Starting Session in Pyspark
 
 ## 1. Ingesting data in hadoop
  To ingest file in hadoop using this code on terminal 
@@ -31,7 +31,7 @@ csv_path = "hdfs://localhost:9000/kencovid.csv"
 df = spark.read.option("header","true").csv(csv_path)
 ```
 
-## 2. Analyzing/Pre processing data 
+## 2 Analyzing/Pre processing data 
 
 ```python
 from pyspark.sql.functions import *
@@ -94,7 +94,7 @@ df = df.withColumn("Recommended ICU/Critical Care beds for Isolation",
 
 ```
 
-###3.1.1 Spliting the data
+### 3.1.1 Spliting the data
 
 ```python
 train_df, test_df = df.randomSplit([0.7, 0.3], seed=42)
@@ -115,7 +115,7 @@ test_vect = assembler.transform(test_df)
 
 ```
 
-##  Training the model 
+## 4 Training the model 
 ```python
 from pyspark.ml.regression import LinearRegression
 
@@ -124,7 +124,7 @@ fitted_model = lr.fit(train_vect)
 
 ```
 
-### 3.1.3 Visualize the model 
+### 4.1 Visualize the model 
 
 here we import neccessary libraries like matplotlib which will help us visualize the linear regression of the model Trained 
 
@@ -142,7 +142,7 @@ plt.title("True vs Predicted")
 plt.show()
 
 ```
- ## 4 Testing the model 
+ ## 5 Testing the model 
 
 ```python
 # Load test data
